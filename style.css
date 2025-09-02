@@ -1,0 +1,152 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Cores */
+:root {
+  --primary: #4CAF50;
+  --secondary: #388E3C;
+  --light: #f9f9f9;
+  --dark: #333;
+  --danger: #e53935;
+}
+
+/* Corpo da página */
+body {
+  background-color: var(--light);
+  padding-top: 70px;
+}
+
+/* Cabeçalho */
+header {
+  background-color: var(--primary);
+  color: white;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+header h1 {
+  font-size: 24px;
+}
+
+/* Container principal */
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Tabela */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+}
+
+table th, table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* Botões */
+.btn {
+  padding: 8px 16px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: white;
+  transition: background 0.3s;
+}
+
+.btn-add {
+  background-color: green;
+
+}
+
+.btn-edit {
+  background-color: #1976D2;
+}
+
+.btn-delete {
+  background-color: var(--danger);
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* Formulários */
+form {
+  background-color: white;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+form input, form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form .btn-submit {
+  background-color: var(--secondary);
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  table thead {
+    display: none;
+  }
+
+  table, table tbody, table tr, table td {
+    display: block;
+    width: 100%;
+  }
+
+  table tr {
+    margin-bottom: 15px;
+  }
+
+  table td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    width: 50%;
+    padding-right: 10px;
+    font-weight: bold;
+    text-align: left;
+  }
+}
