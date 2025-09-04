@@ -2,13 +2,9 @@ const path = require('path');
 const express = require('express');
 const app = express();
 
+
 app.use(express.static(path.join(__dirname,'src')));
 
-app.use(express.json());
-let produtos = [
-    {id: 1, desc: "Amei a página!"},
-    {id: 2, desc: "Parabéns :)"}
-];
 app.get('/avaliacao', (req, res) => {
     res.json(avaliacoes);
 });
