@@ -1,114 +1,165 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-     <link rel="stylesheet" type="text/css" href="style.css">
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mundo dos Cachorros</title>
-</head>
+  <title>Gerenciador de Mercado</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header>
-      <h1>Gerenciador de Mercado</h1>
-    </header>
-    
-    <div class="container">
-      <button class="btn btn-add">Adicionar Produto</button>
+  <header>Gerenciador de Mercado</header>
 
-      <div class="modal" id="contactModal">
-        <div class="modal-content">
-          <span class="close" id="closeFormBtn">&times;</span>
-          <h2>Adicionar Produto</h2>
-          <form onsubmit="return enviarFormulario(event)">
-            <input type="text" placeholder="Preço do produto" required />
-            <input type="text" placeholder="Quantidade" required />
-            <button type="submit">Enviar</button>
-          </form>
+  <div class="container">
+
+    <!-- Botão de adicionar -->
+    <div class="top-actions">
+      <button class="btn btn-add" id="openFormBtn" type="button">+ Adicionar Produto</button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="contactModal">
+      <div class="modal-content">
+        <button class="close" id="closeFormBtn">&times;</button>
+        <h2 id="modalTitle">Adicionar Produto</h2>
+        <form id="productForm">
+          <input type="hidden" id="editIndex">
+          <input type="text" id="nome" placeholder="Nome do produto" required />
+          <input type="text" id="categoria" placeholder="Categoria" required />
+          <input type="number" id="preco" placeholder="Preço (R$)" required />
+          <input type="number" id="estoque" placeholder="Estoque" required />
+          <button type="submit" class="btn btn-add" style="width:100%;">Salvar</button>
+        </form>
+      </div>
+    </div>
+
+    <h2> Lista de Produtos</h2>
+    <!-- Tabela -->
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Categoria</th>
+          <th>Preço</th>
+          <th>Estoque</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- Cards -->
+    <div class="row">
+      <div class="card">
+        <h3>Gerenciar Produtos</h3>
+        <button class="btn btn-edit" type="button" onclick="listarProduto()">Listar Produtos</button>
+        <ul id="lista-produto"></ul>
+        <div class="d-flex" style="margin-top:10px;">
+          <input id="produto" placeholder="Insira o produto">
+          <button class="btn btn-add" type="button" onclick="adicionarProduto()">Adicionar</button>
         </div>
       </div>
-    
-      <table>
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Categoria</th>
-            <th>Preço</th>
-            <th>Estoque</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td data-label="Produto">Arroz</td>
-            <td data-label="Categoria">Alimentos</td>
-            <td data-label="Preço">R$ 5,00</td>
-            <td data-label="Estoque">20</td>
-            <td data-label="Ações">
-              <button class="btn btn-edit">Editar</button>
-              <button class="btn btn-delete">Excluir</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </header>
 
-  <main>
-    <section>
-      <div class="image-row">
-        <img src="" alt=""/>
-        <img src="" alt=""/>
+      <div class="card">
+        <h3>Gerenciar Produto</h3>
+        <div class="d-flex" style="margin-bottom:8px;">
+          <input id="id-update" placeholder="ID">
+          <input id="desc-update" placeholder="Novo Preço">
+          <button class="btn btn-edit" type="button" onclick="atualizarProduto()">Atualizar</button>
+        </div>
+        <div class="d-flex">
+          <input id="id-delete" placeholder="ID">
+          <button class="btn btn-delete" type="button" onclick="deletarProduto()">Remover</button>
+        </div>
       </div>
-    </section>
+    </div>
 
-    <section>
-      
-      
-    </section>
-
-  </main>
-
-<h2>Liista de produtos</h2>
-  <button onclick="listarProduto()">Listar Avaliações</button>
-  <ul id="lista-avaliacao"></ul>
-
- <h2>Adicionar Avaliação</h2>
- <input id="avaliacao" placeholder="insira sua avaliação">
-  <button onclick="adicionarAvaliacao()">Adicionar</button>
- <script src="scriptAvaliacoes.js"></script>
-
- <h2> Atualizar produto</h2>
- <input id="id-update" placeholder="ID">
- <input id="desc-update" placeholder="Nova Avaliação">
- <button onclick="atualizarProduto()">Atualizar</button>
-
- <h2>Remover produto</h2>
- <input id="id-delete" placeholder="ID">
- <button onclick="deletarProduto()">Remover</button>
-
-  <footer>
-
-  </footer>
+  </div>
 
   <script>
-    const openBtn = document.getElementById("openFormBtn");
+    const openBtn  = document.getElementById("openFormBtn");
     const closeBtn = document.getElementById("closeFormBtn");
-    const modal = document.getElementById("contactModal");
+    const modal    = document.getElementById("contactModal");
+    const form     = document.getElementById("productForm");
+    const table    = document.getElementById("productTable").querySelector("tbody");
+    const editIndexInput = document.getElementById("editIndex");
+    const modalTitle = document.getElementById("modalTitle");
 
-    openBtn.onclick = () => modal.style.display = "block";
-    closeBtn.onclick = () => modal.style.display = "none";
-    window.onclick = (e) => {
-      if (e.target == modal) modal.style.display = "none";
-    };
+    let produtos = [
+      { nome: "Arroz", categoria: "Alimentos", preco: 5.00, estoque: 20 },
+      { nome: "Feijão", categoria: "Alimentos", preco: 7.50, estoque: 35 },
+      { nome: "Detergente", categoria: "Limpeza", preco: 2.30, estoque: 50 },
+      { nome: "Refrigerante", categoria: "Bebidas", preco: 6.90, estoque: 40 },
+    ];
 
-    function enviarFormulario(event) {
-      event.preventDefault();
-      alert("Mensagem enviada com sucesso! Em breve entraremos em contato.");
-      modal.style.display = "none";
-      return false;
+    function renderTable() {
+      table.innerHTML = "";
+      produtos.forEach((p, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${p.nome}</td>
+          <td>${p.categoria}</td>
+          <td>R$ ${p.preco.toFixed(2)}</td>
+          <td>${p.estoque}</td>
+          <td>
+            <button class="btn btn-edit" onclick="editarProduto(${index})">Editar</button>
+            <button class="btn btn-delete" onclick="excluirProduto(${index})">Excluir</button>
+          </td>
+        `;
+        table.appendChild(row);
+      });
     }
+
+    function openModal(editing = false) {
+      modal.style.display = "flex";
+      if (!editing) {
+        modalTitle.textContent = "Adicionar Produto";
+        form.reset();
+        editIndexInput.value = "";
+      }
+    }
+    function closeModal() { modal.style.display = "none"; }
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const nome = document.getElementById("nome").value;
+      const categoria = document.getElementById("categoria").value;
+      const preco = parseFloat(document.getElementById("preco").value);
+      const estoque = parseInt(document.getElementById("estoque").value);
+      const editIndex = editIndexInput.value;
+
+      if (editIndex === "") {
+        produtos.push({ nome, categoria, preco, estoque });
+      } else {
+        produtos[editIndex] = { nome, categoria, preco, estoque };
+      }
+      renderTable();
+      closeModal();
+    });
+
+    function editarProduto(index) {
+      const p = produtos[index];
+      document.getElementById("nome").value = p.nome;
+      document.getElementById("categoria").value = p.categoria;
+      document.getElementById("preco").value = p.preco;
+      document.getElementById("estoque").value = p.estoque;
+      editIndexInput.value = index;
+      modalTitle.textContent = "Editar Produto";
+      openModal(true);
+    }
+
+    function excluirProduto(index) {
+      if (confirm("Deseja realmente excluir este produto?")) {
+        produtos.splice(index, 1);
+        renderTable();
+      }
+    }
+
+    openBtn.addEventListener("click", () => openModal());
+    closeBtn.addEventListener("click", closeModal);
+    window.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+
+    renderTable();
   </script>
 </body>
 </html>
