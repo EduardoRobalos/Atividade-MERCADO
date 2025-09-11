@@ -1,114 +1,61 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-     <link rel="stylesheet" type="text/css" href="style.css">
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mundo dos Cachorros</title>
-</head>
+  <title>Gerenciador de Mercado</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header>
-      <h1>Gerenciador de Mercado</h1>
-    </header>
-    
-    <div class="container">
-      <button class="btn btn-add">Adicionar Produto</button>
+  <header>Gerenciador de Mercado</header>
 
-      <div class="modal" id="contactModal">
-        <div class="modal-content">
-          <span class="close" id="closeFormBtn">&times;</span>
-          <h2>Adicionar Produto</h2>
-          <form onsubmit="return enviarFormulario(event)">
-            <input type="text" placeholder="Preço do produto" required />
-            <input type="text" placeholder="Quantidade" required />
-            <button type="submit">Enviar</button>
-          </form>
-        </div>
-      </div>
-    
-      <table>
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Categoria</th>
-            <th>Preço</th>
-            <th>Estoque</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td data-label="Produto">Arroz</td>
-            <td data-label="Categoria">Alimentos</td>
-            <td data-label="Preço">R$ 5,00</td>
-            <td data-label="Estoque">20</td>
-            <td data-label="Ações">
-              <button class="btn btn-edit">Editar</button>
-              <button class="btn btn-delete">Excluir</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="container">
+
+    <div class="top-actions">
+      <button class="btn btn-add" id="openFormBtn" type="button">+ Adicionar Produto</button>
     </div>
-  </header>
 
-  <main>
-    <section>
-      <div class="image-row">
-        <img src="" alt=""/>
-        <img src="" alt=""/>
+    <div class="modal" id="contactModal">
+      <div class="modal-content">
+        <button class="close" id="closeFormBtn">&times;</button>
+        <h2 id="modalTitle">Adicionar Produto</h2>
+        
+        <form id="productForm">
+          <input type="hidden" id="editIndex">
+          <input type="text" id="nome" placeholder="Nome do produto" required />
+          <input type="text" id="categoria" placeholder="Categoria" required />
+          <input type="number" id="preco" placeholder="Preço (R$)" required step="0.01" min="0" />
+          <input type="number" id="estoque" placeholder="Estoque" required />
+          <button type="submit" class="btn btn-add" style="width:100%;">Salvar</button>
+        </form>
       </div>
-    </section>
+    </div>
 
-    <section>
-      
-      
-    </section>
+    <h2> Lista de Produtos</h2>
+   
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Categoria</th>
+          <th>Preço</th>
+          <th>Estoque</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-  </main>
+    <div class="row">
+      <div class="card">
+        <h3>Gerenciar Produtos</h3>
+        <button class="btn btn-edit" type="button" onclick="listarProdutosPorCategoria()">Listar Produtos</button>
+        <ul id="lista-produto"></ul>
+  </div>
 
-<h2>Liista de produtos</h2>
-  <button onclick="listarProduto()">Listar Avaliações</button>
-  <ul id="lista-avaliacao"></ul>
+  <script src="scriptAvaliacoes.js">
 
- <h2>Adicionar Avaliação</h2>
- <input id="avaliacao" placeholder="insira sua avaliação">
-  <button onclick="adicionarAvaliacao()">Adicionar</button>
- <script src="scriptAvaliacoes.js"></script>
-
- <h2> Atualizar produto</h2>
- <input id="id-update" placeholder="ID">
- <input id="desc-update" placeholder="Nova Avaliação">
- <button onclick="atualizarProduto()">Atualizar</button>
-
- <h2>Remover produto</h2>
- <input id="id-delete" placeholder="ID">
- <button onclick="deletarProduto()">Remover</button>
-
-  <footer>
-
-  </footer>
-
-  <script>
-    const openBtn = document.getElementById("openFormBtn");
-    const closeBtn = document.getElementById("closeFormBtn");
-    const modal = document.getElementById("contactModal");
-
-    openBtn.onclick = () => modal.style.display = "block";
-    closeBtn.onclick = () => modal.style.display = "none";
-    window.onclick = (e) => {
-      if (e.target == modal) modal.style.display = "none";
-    };
-
-    function enviarFormulario(event) {
-      event.preventDefault();
-      alert("Mensagem enviada com sucesso! Em breve entraremos em contato.");
-      modal.style.display = "none";
-      return false;
-    }
   </script>
 </body>
 </html>
